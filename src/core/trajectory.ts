@@ -56,7 +56,7 @@ export function initialMotion(config: ParticleConfig): MotionState {
 export function rk4Step(
   state: MotionState,
   dt: number,
-  acceleration: (position: Vec) => Vec,
+  acceleration: (position: Vec, velocity: Vec) => Vec,
 ): MotionState {
   if (
     !Number.isFinite(dt) ||
@@ -68,7 +68,7 @@ export function rk4Step(
     throw new Halt("INVALID_STATE");
   const derivative = (position: Vec, velocity: Vec) => {
     if (!finite(position) || !finite(velocity)) throw new Halt("INVALID_STATE");
-    const a = acceleration(position);
+    const a = acceleration(position, velocity);
     if (!finite(a)) throw new Halt("INVALID_STATE");
     return { r: velocity, v: a };
   };
@@ -210,3 +210,4 @@ export function advanceParticle(
     };
   }
 }
+
