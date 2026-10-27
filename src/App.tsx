@@ -1,3 +1,5 @@
+import { CircuitsModule } from "./modules/CircuitsModule";
+import { MagnetismModule } from "./modules/MagnetismModule";
 import { ParticlePanel } from "./modules/ParticlePanel";
 import { useTrajectory } from "./modules/useTrajectory";
 import type { SetStateAction } from "react";
@@ -332,29 +334,25 @@ function ElectricModule({ active }: { active: boolean }) {
 }
 
 export default function App() {
-  const [module, setModule] = useState<"electric" | "capacitor">("electric");
+  const [module, setModule] = useState<"electric" | "capacitor" | "circuits" | "magnetism">("electric");
   return (
     <>
       <nav className="module-nav" aria-label="Módulos del simulador">
-        <button
-          aria-current={module === "electric" ? "page" : undefined}
-          onClick={() => setModule("electric")}
-        >
-          01 · Campo eléctrico
-        </button>
-        <button
-          aria-current={module === "capacitor" ? "page" : undefined}
-          onClick={() => setModule("capacitor")}
-        >
-          02 · Capacitores
-        </button>
+        {([
+          ['electric', '01 · Campo eléctrico'], ['capacitor', '02 · Capacitores'],
+          ['circuits', '03 · Circuitos'], ['magnetism', '04 · Magnetismo'],
+        ] as const).map(([key, label]) => <button key={key} aria-current={module === key ? 'page' : undefined} onClick={() => setModule(key)}>{label}</button>)}
       </nav>
       <div hidden={module !== "electric"}>
         <ElectricModule active={module === "electric"} />
       </div>
+      <div hidden={module !== "circuits"}><CircuitsModule /></div>
+      <div hidden={module !== "magnetism"}><MagnetismModule active={module === "magnetism"} /></div>
       <div hidden={module !== "capacitor"}>
         <CapacitorModule />
       </div>
     </>
   );
 }
+
+
