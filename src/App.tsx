@@ -337,11 +337,15 @@ export default function App() {
   const [module, setModule] = useState<"electric" | "capacitor" | "circuits" | "magnetism">("electric");
   return (
     <>
+      <div className="lab-brandbar">
+        <div className="lab-identity"><span className="orbital-mark" aria-hidden="true"><i /><i /><i /><b /></span><div><strong>FLUX<span>LAB</span></strong><p>Laboratorio interactivo de física</p></div></div>
+        <div className="lab-signature"><span className="live-dot" aria-hidden="true" />Explora · Experimenta · Descubre</div>
+      </div>
       <nav className="module-nav" aria-label="Módulos del simulador">
         {([
           ['electric', '01 · Campo eléctrico'], ['capacitor', '02 · Capacitores'],
           ['circuits', '03 · Circuitos'], ['magnetism', '04 · Magnetismo'],
-        ] as const).map(([key, label]) => <button key={key} aria-current={module === key ? 'page' : undefined} onClick={() => setModule(key)}>{label}</button>)}
+        ] as const).map(([key, label]) => <button key={key} data-module={key} aria-label={label} aria-current={module === key ? 'page' : undefined} onClick={() => setModule(key)}><span className="module-number" aria-hidden="true">{label.slice(0, 2)}</span><span className="module-copy"><strong>{label.slice(5)}</strong><small>{({ electric: 'Cargas, campos y movimiento', capacitor: 'Energía entre dos placas', circuits: 'Conecta y analiza', magnetism: 'Fuentes B y fuerza de Lorentz' })[key]}</small></span><span className="module-arrow" aria-hidden="true">↗</span></button>)}
       </nav>
       <div hidden={module !== "electric"}>
         <ElectricModule active={module === "electric"} />
@@ -354,5 +358,6 @@ export default function App() {
     </>
   );
 }
+
 
 
